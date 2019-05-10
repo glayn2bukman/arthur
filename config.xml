@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<widget id="org.jerm.arthur" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+    <name>Arthur</name>
+    <description>Arthur Security System</description>
+
+    <author email="bukman@jermtechnology.com" href="http://www.jermtechnology.com">Jerm Technology</author>
+    <content src="index.html" />
+
+    <preference name="DisallowOverscroll" value="true" />
+    <preference name="android-minSdkVersion" value="14"/>
+
+    <feature name="App">
+        <param name="android-package" value="org.apache.cordova.App" />
+    </feature>
+
+    <!-- use latest version of phonegap...this version is displayed in the phonegap web -->
+    <!-- <preference name="phonegap-version" value="cli-6.5.0" /> -->
+
+    <allow-navigation href="*" />
+    <access origin="*" />
+
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    <allow-intent href="market:*" />
+
+    <icon src="data/logo.png" gap:role="default" />
+
+    <plugin name="cordova-plugin-whitelist" />
+</widget>
+

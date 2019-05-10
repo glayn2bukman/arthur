@@ -1,0 +1,253 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">        
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+
+        <title>Arthur</title>
+    
+        <link rel="stylesheet" href="static/bootstrap-3.3.7/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="static/index.css">
+        <link rel="stylesheet" href="static/loading.css">
+
+        <!-- jQuery library -->
+        <script src="static/jquery-3.3.1.min.js"></script>
+
+        <!-- Latest compiled JavaScript -->
+        <script src="static/bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>    
+
+        <script src="static/globals.js"></script>
+        <script src="static/index.js"></script>
+
+        <!-- sweet alert -->
+        <script src="static/sweetalert/sweetalert.min.js"></script>
+        <link rel="stylesheet" href="static/sweetalert/sweetalert.css">
+
+        <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+ 
+        <link id="theme" rel="stylesheet" href="">
+    </head>
+
+    <body oncontextmenu="return false;">        
+        <div id='login_div' style="display:none2">
+            <h1 id='title'>Arthur</h1>
+            <div id='login_form'>
+                <div class="input-group" style='margin-bottom:10px;'>
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                    <input id="uname" type="text" class="form-control li" name="uname" placeholder="Username">
+                </div>
+                <div class="input-group" style='margin-bottom:20px;'>
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                    <input id="pswd" type="password" class="form-control li" name="pswd" placeholder="Password">
+                </div>
+                <div>
+                    <button class='btn btn-info' style='width:40%;float:right;background:white;color:black;' onclick='show_main_div()'>Login</button>
+                </div>
+            </div>            
+        </div>
+
+        <div id='full_report_div' style='display:none;'>            
+            <span class="glyphicon glyphicon-chevron-left" style='margin:5px; font-size:1.2em;' onclick='exit_full_report()'></span>
+            <div id='general_info'>
+                <span id='profile_pic_span'><img id='profile_pic' src='data/1.png'></span>
+                <span id='general_details'>
+                    <div class='row'>
+                        <label class='key'>Name</label>
+                        <span id='inames' class='value'>Jon Doe</span>
+                    </div>
+                    <div class='row'>
+                        <label class='key'>Age</label>
+                        <span id='inames' class='value'>29</span>
+                    </div>
+                    <div class='row'>
+                        <label class='key'>Sex</label>
+                        <span id='inames' class='value'>Male</span>
+                    </div>
+                </span>
+            </div>
+            <div style='min-height:25px;'>
+                <label class='key2'>Crime</label>
+                <span class='value2' id='crime'>Theft</span>
+            </div>
+            <div style='min-height:25px;'>
+                <label class='key2'>Location</label>
+                <span class='value2'>Kyambogo University, East End Hall</span>
+            </div>
+            <div style='min-height:25px;'>
+                <label class='key2'>Ref NO</label>
+                <span class='value2' id='ref_no'>0865/2019</span>
+            </div>
+            <div style='min-height:25px; border-bottom:1px solid #bbb;'>
+                <label class='key2'>Date</label>
+                <span class='value2'>02/03/2019</span>
+            </div>
+            
+            <p style='margin:5px; border-bottom:1px solid #bbb;'>
+                <label style='font-size:1.2em;'>Description</label><br>
+                The afore-mentioned suspect was caught with 2 laptops(DELL Inspiron 3542 and HP Brobook 5678)<br><br>
+                The suspect is said to have used a master key to open the door of a one John Doe on <b>02/03/2019</b> at
+                about <b>9:00 pm</b>. The crime scene was pictures(see attachments)
+            </p>
+
+            <p style='margin:5px;'>
+                <label style='font-size:1.2em;'>Progress</label><br>
+                <ul style=' border-bottom:1px solid #bbb;'>
+                    <li><label>10/03/2019</label><span style='margin-left:10px;'>Case Closed</span></li>
+                    <li><label>05/03/2019</label><span style='margin-left:10px;'>Recovered Stolen Laptops</span></li>
+                    <li><label>03/03/2019</label><span style='margin-left:10px;'>Started Investigation</span></li>
+                    <li><label>02/03/2019</label><span style='margin-left:10px;'>Reported Crime</span></li>
+                </ul>
+            </p>
+            
+            <p style="margin:5px;">
+                <label style='font-size:1.2em;'>Attachments</label><br>
+                <img class='img-attachment' src='data/1.png'>
+                <img class='img-attachment' src='data/2.png'>
+                <img class='img-attachment' src='data/3.png'>
+                <img class='img-attachment' src='data/4.png'>
+                <img class='img-attachment' src='data/5.png'>            
+            </p>
+            
+        </div>
+
+        <div id='search_div' style='display:none;'>
+            <span class="glyphicon glyphicon-chevron-left" style='margin:5px; font-size:1.2em;' onclick='exit_search()'></span>
+            <div style='height:30px;'>
+                <label style='margin:5px;'>Search Crimes</label>
+                <div class="input-group" style='margin:5px;'>
+                    <input id="search" type="text" class="form-control" placeholder="reference number">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                </div>
+            </div>
+            
+            <div class='info_div' style='margin-top:50px; border:0px;'>
+                <span class='profile_pic_span'><img class='profile_pic' src='data/1.png'></span>
+                <span class='general_details'>
+                    <div class='row'>
+                        <label class='key'>Ref NO</label>
+                        <span id='inames' class='value'>1356/2019</span>
+                    </div>
+                    <div class='row'>
+                        <label class='key'>Crime</label>
+                        <span id='inames' class='value'>Theft</span>
+                    </div>
+                    <div class='row'>
+                        <label class='key'>Offender</label>
+                        <span id='inames' class='value'>Francis Kwile</span>
+                    </div>
+                </span>
+            </div>
+            <div class='info_div' style='margin-top:15px; border:0px;'>
+                <span class='profile_pic_span'><img class='profile_pic' src='data/2.png'></span>
+                <span class='general_details'>
+                    <div class='row'>
+                        <label class='key'>Ref NO</label>
+                        <span id='inames' class='value'>8946/2019</span>
+                    </div>
+                    <div class='row'>
+                        <label class='key'>Crime</label>
+                        <span id='inames' class='value'>Vandalism</span>
+                    </div>
+                    <div class='row'>
+                        <label class='key'>Offender</label>
+                        <span id='inames' class='value'>Mabikke Hillary</span>
+                    </div>
+                </span>
+            </div>
+            <div class='info_div' style='margin-top:15px; border:0px;'>
+                <span class='profile_pic_span'><img class='profile_pic' src='data/3.png'></span>
+                <span class='general_details'>
+                    <div class='row'>
+                        <label class='key'>Ref NO</label>
+                        <span id='inames' class='value'>9625/2019</span>
+                    </div>
+                    <div class='row'>
+                        <label class='key'>Crime</label>
+                        <span id='inames' class='value'>Assault</span>
+                    </div>
+                    <div class='row'>
+                        <label class='key'>Offender</label>
+                        <span id='inames' class='value'>Male Moses</span>
+                    </div>
+                </span>
+            </div>
+            <div class='info_div' style='margin-top:15px; border:0px;'>
+                <span class='profile_pic_span'><img class='profile_pic' src='data/4.png'></span>
+                <span class='general_details'>
+                    <div class='row'>
+                        <label class='key'>Ref NO</label>
+                        <span id='inames' class='value'>03215/2019</span>
+                    </div>
+                    <div class='row'>
+                        <label class='key'>Crime</label>
+                        <span id='inames' class='value'>Missconduct</span>
+                    </div>
+                    <div class='row'>
+                        <label class='key'>Offender</label>
+                        <span id='inames' class='value'>Marvin Semuto</span>
+                    </div>
+                </span>
+            </div>
+            <div class='info_div' style='margin-top:15px; border:0px;'>
+                <span class='profile_pic_span'><img class='profile_pic' src='data/5.png'></span>
+                <span class='general_details'>
+                    <div class='row'>
+                        <label class='key'>Ref NO</label>
+                        <span id='inames' class='value'>93205/2019</span>
+                    </div>
+                    <div class='row'>
+                        <label class='key'>Crime</label>
+                        <span id='inames' class='value'>PDA</span>
+                    </div>
+                    <div class='row'>
+                        <label class='key'>Offender</label>
+                        <span id='inames' class='value'>Florence Kiiza</span>
+                    </div>
+                </span>
+            </div>
+
+
+        </div>
+
+        <div id='report_crime_div' style='display:none;'>
+            <label style='font-size:1.2em;margin:5px;'>Report Crime</label>
+    
+            <p>
+                <div style='margin-right:5px;'>
+                    <label class='key'>Date</label>
+                    <span class='value'><input type='date' class='form-control'></span>
+                </div>
+                <div style='margin-right:5px;'>
+                    <label class='key' style='margin-top:5px;'>Time</label>
+                    <span class='value' style='margin-top:5px;'><input type='time' class='form-control'></span>
+                </div>
+                <div style='margin-right:5px;'>
+                    <label class='key' style='margin-top:5px;'>Suspect</label>
+                    <span class='value' style='margin-top:5px;'><input type='text' placeholder="suspect's names" class='form-control'></span>
+                </div>
+                <div style='margin-right:5px;'>
+                    <label class='key' style='margin-top:5px;'>Location</label>
+                    <span class='value' style='margin-top:5px;'><input type='text' placeholder='crime location/scene' class='form-control'></span>
+                </div>
+
+                <label style='margin:5px;margin-top:20px;'>Crime Description</label><br>
+                <textarea class='form-control' rows=6 placeholder='type here the crime details. you can be as explicit as possible'></textarea>
+
+                <label style='margin:5px;margin-top:20px;'>Attachments</label><br>
+                <div id='rattachments_div' style='height:120px;border:1px solid #aaa;overflow:auto;'></div>
+                <input type='file' style='display:none;' id='new_attachment'>
+                <span id='plus' class='glyphicon glyphicon-plus' style='float:right;margin:5px;font-size:1.3em;'></span>
+
+            </p>
+
+            <div style='position:absolute; bottom:0px; margin:5px;width:96%;text-align:right;'>
+                <button class='btn btn-warning' style='margin-right:10px;' onclick='view_search()'>View Crimes</button>
+                <button class='btn btn-success'>Report</button>
+            </div>
+
+        </div>
+
+        <div id='loading' class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+    </body>
+
+</html>
