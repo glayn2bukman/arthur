@@ -185,6 +185,8 @@ function readURL(input) {
 
 // ************************************************************************************************************
 function init(){
+    // to bend text...include the CirleType.min.js file
+    new CircleType(document.getElementById('title')).radius(190)/*.dir(-1)//this would reverse the bend*/;    
     
     document.addEventListener("backbutton", function(e){
         e.stopPropagation();
@@ -206,6 +208,8 @@ function init(){
     });
 
     document.getElementById('plus').onclick = function(){document.getElementById('new_attachment').click();};
+
+
 
 }
 
