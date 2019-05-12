@@ -73,9 +73,10 @@ function logout(){
         function(msg){
             if (msg === false) {return false;} // clicked "cancel"
 
-            document.getElementById('meter_details').style.display = 'none';
+            clearInterval(FETCH_INTERVAL);
+            document.getElementById('pswd').value = '';
+            document.getElementById('report_crime_div').style.display = 'none';
             document.getElementById('login_div').style.display = 'block';
-            refresh(); // is defined in index.js
         }
     );
 

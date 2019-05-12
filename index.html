@@ -29,9 +29,9 @@
         <link id="theme" rel="stylesheet" href="">
     </head>
 
-    <body oncontextmenu="return false;">        
+    <body oncontextmenu="return false;">     
         <div id='login_div' style="display:none2">
-            <h1 id='title' style='font-size:1.4em;'>Interactive Crime Reporting System</h1>
+            <h1 id='title' style='font-size:1.5em;'>Interactive Crime Reporting System</h1>
             <div id='login_form'>
                 <div class="input-group" style='margin-bottom:10px;'>
                     <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
@@ -42,71 +42,161 @@
                     <input id="pswd" type="password" class="form-control li" name="pswd" placeholder="Password">
                 </div>
                 <div>
-                    <button class='btn btn-info' style='width:40%;float:right;background:white;color:black;' onclick='show_main_div()'>Login</button>
+                    <button class='btn btn-info' style='width:40%;float:right;background:white;color:black;' onclick='login()'>Login</button>
                 </div>
-            </div>            
+            </div>
+            <input id='ip' type='text' placeholder='127.0.0.1' 
+                style='position:fixed;bottom:5px;width:30%;left:35%;text-align:center;opacity:0.5;'>
         </div>
 
-        <div id='full_report_div' style='display:none;'>            
+        <div class="modal fade" id="admin_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" style="width:96%;" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel" style='font-size:1.5em;'>Edit Case</h4>
+              </div>
+              <div class="modal-body">
+                    <form id='admin-update' enctype="multipart/form-data">
+                        <input type='hidden' name='attachments_list' id='aattachments_list' value=''>
+                        <input type='hidden' name='dp_path' id='adp_path' value=''>
+                        <input type='hidden' name='progress' id='aprogress' value=''>
+                        
+                        <div class='row' style='max-width:70%;'>
+                            <label class='key'>Reported By</label>
+                            <input id='aareporter' name='reporter' type='hidden' value='17/U/7730/PE'>
+                            <span id='areporter' class='form-control value'>17/U/7730/PE</span>
+                        </div>
+
+                        <div id='general_info' style='border:0px;'>
+                            <input name='_dp_path' type='hidden' value='dp.png'>
+                            <input name='dp' type='file' style='display:none;' id='adp' accept="image/*">
+                            <span id='aprofile_pic_span'><img id='aprofile_pic' style='width:100px;' src=''></span>
+                        </div>
+
+                        <div class='row' style='max-width:70%;'>
+                            <label class='key'>Suspect's Names</label>
+                            <input name='suspect' id='anames' type='text' class='form-control value' placeholder='John Doe'>
+                        </div>
+                        <div class='row' style='max-width:70%;'>
+                            <label class='key'>Age</label>
+                            <input name='age' id='aage' type='number' class='form-control value' placeholder='age'>
+                        </div>
+                        <div class='row' style='max-width:70%;'>
+                            <label class='key'>Gender</label>
+                            <select name='sex' id='asex' class='form-control value'>
+                                <option value='Not Sure'>Not Sure</option>
+                                <option value='Male'>Male</option>
+                                <option value='Female'>Female</option>
+                            </select>
+                        </div>
+
+                        <div class='row' style='max-width:70%;'>
+                            <label class='key'>Crime</label>
+                            <select name='crime' id='acrime' class='form-control value'>
+                                <option value='Unspecified'>Unspecified</option>
+                                <option value='Theft'>Theft</option>
+                                <option value='Assault'>Assault</option>
+                                <option value='Unlawful Rioting'>Unlawful Rioting</option>
+                            </select>
+                        </div>
+                        <div class='row' style='max-width:70%;'>
+                            <label class='key'>Location</label>
+                            <input name='loc' id='aloc' type='text' class='form-control value' placeholder='eg Main Hall, East'>
+                        </div>
+                        <div class='row' style='max-width:70%;'>
+                            <label class='key'>Ref NO</label>
+                            <!-- cant edit this -->
+                            <input id='aarefNO'name='refNO' type='hidden' value='0865/2019'>
+                            <span id='arefNO' class='form-control value'>0865/2019</span>
+                        </div>
+                        <div class='row' style='max-width:70%;'>
+                            <label class='key'>Date</label>
+                            <input id='aadate'name='date' type='hidden' value='02/03/2019'>
+                            <span id='adate' class='form-control value'>02/03/2019</span>
+                        </div>
+                        
+                        <p style='margin:5px;float:left;width:100%;'>
+                            <label style='font-size:1.2em;'>Description</label><br>
+                            <textarea name='desc' id='adesc' rows=6 class='form-control'></textarea>
+                        </p>
+
+                        <p style='margin:5px;float:left;width:100%; overflow:auto;'>
+                            <span class="glyphicon glyphicon-plus" 
+                                style='float:right;margin:5px; font-size:1.2em;color:green;'
+                                onclick='new_progress()'></span>
+                            <label style='font-size:1.2em;'>Progress</label>
+                            <ol id='aprogress_ul' style='border-bottom:1px solid #bbb; float:left;width:100%;' reversed></ol>
+                        </p>
+                        
+                        <p style="margin:5px;float:left;width:100%;">
+                            <input name='attachments' type='file' style='display:none;' id='anew_attachment' accept="image/*" multiple>
+                            <span id='aplus' class="glyphicon glyphicon-plus" style='float:right;margin:5px; font-size:1.2em;color:green;'></span>
+                            <label style='font-size:1.2em;'>Attachments</label><br>
+                            <div id='aattachments_div' style='float:left;width:100%;overflow:auto;background:#bbb;'>
+                            </div>
+                        </p>
+
+                        <div class='row' style='float:left;width:100%;margin-top:30px;text-align:right;'>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" >Back</button>
+                            <button type="button" class="btn btn-success" onclick='update()'>Update Case</button>
+                        </div>
+                    </form>
+              <div class="modal-footer" style='border:0px;'></div>
+            </div>
+          </div>
+        </div></div>
+
+
+        <div id='full_report_div' style='display:none;'>
             <span class="glyphicon glyphicon-chevron-left" style='margin:5px; font-size:1.2em;' onclick='exit_full_report()'></span>
             <div id='general_info'>
-                <span id='profile_pic_span'><img id='profile_pic' src='data/1.png'></span>
+                <span id='profile_pic_span'><img id='profile_pic' src=''></span>
                 <span id='general_details'>
                     <div class='row'>
                         <label class='key'>Name</label>
-                        <span id='inames' class='value'>Jon Doe</span>
+                        <span id='inames' class='value'></span>
                     </div>
                     <div class='row'>
                         <label class='key'>Age</label>
-                        <span id='inames' class='value'>29</span>
+                        <span id='iage' class='value'></span>
                     </div>
                     <div class='row'>
                         <label class='key'>Sex</label>
-                        <span id='inames' class='value'>Male</span>
+                        <span id='isex' class='value'></span>
                     </div>
                 </span>
             </div>
             <div style='min-height:25px;'>
                 <label class='key2'>Crime</label>
-                <span class='value2' id='crime'>Theft</span>
+                <span class='value2' id='icrime'></span>
             </div>
             <div style='min-height:25px;'>
                 <label class='key2'>Location</label>
-                <span class='value2'>Kyambogo University, East End Hall</span>
+                <span id='iloc' class='value2'></span>
             </div>
             <div style='min-height:25px;'>
                 <label class='key2'>Ref NO</label>
-                <span class='value2' id='ref_no'>0865/2019</span>
+                <span class='value2' id='irefNO'></span>
             </div>
             <div style='min-height:25px; border-bottom:1px solid #bbb;'>
                 <label class='key2'>Date</label>
-                <span class='value2'>02/03/2019</span>
+                <span id='idate' class='value2'></span>
             </div>
             
             <p style='margin:5px; border-bottom:1px solid #bbb;'>
-                <label style='font-size:1.2em;'>Description</label><br>
-                The afore-mentioned suspect was caught with 2 laptops(DELL Inspiron 3542 and HP Brobook 5678)<br><br>
-                The suspect is said to have used a master key to open the door of a one John Doe on <b>02/03/2019</b> at
-                about <b>9:00 pm</b>. The crime scene was pictures(see attachments)
+                <label style='font-size:1.2em;'></label><br>
+                <div id='idesc' style='margin:5px;'></div>
             </p>
 
             <p style='margin:5px;'>
                 <label style='font-size:1.2em;'>Progress</label><br>
-                <ul style=' border-bottom:1px solid #bbb;'>
-                    <li><label>10/03/2019</label><span style='margin-left:10px;'>Case Closed</span></li>
-                    <li><label>05/03/2019</label><span style='margin-left:10px;'>Recovered Stolen Laptops</span></li>
-                    <li><label>03/03/2019</label><span style='margin-left:10px;'>Started Investigation</span></li>
-                    <li><label>02/03/2019</label><span style='margin-left:10px;'>Reported Crime</span></li>
-                </ul>
+                <ol id='iprogress' style='border-bottom:1px solid #bbb;' reversed></ol>
             </p>
             
             <p style="margin:5px;">
                 <label style='font-size:1.2em;'>Attachments</label><br>
-                <img class='img-attachment' src='data/1.png'>
-                <img class='img-attachment' src='data/2.png'>
-                <img class='img-attachment' src='data/3.png'>
-                <img class='img-attachment' src='data/4.png'>
-                <img class='img-attachment' src='data/5.png'>            
+                <div id='iattachments' style='float:left;width:100%;overflow:auto;'></div>
             </p>
             
         </div>
@@ -117,133 +207,63 @@
                 <label style='margin:5px;'>Search Crimes</label>
                 <div class="input-group" style='margin:5px;'>
                     <input id="search" type="text" class="form-control" placeholder="reference number">
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                    <span class="input-group-addon" onclick='filter()'><i class="glyphicon glyphicon-search"></i></span>
                 </div>
             </div>
             
-            <div class='info_div' style='margin-top:50px; border:0px;'>
-                <span class='profile_pic_span'><img class='profile_pic' src='data/1.png'></span>
-                <span class='general_details'>
-                    <div class='row'>
-                        <label class='key'>Ref NO</label>
-                        <span id='inames' class='value'>1356/2019</span>
-                    </div>
-                    <div class='row'>
-                        <label class='key'>Crime</label>
-                        <span id='inames' class='value'>Theft</span>
-                    </div>
-                    <div class='row'>
-                        <label class='key'>Offender</label>
-                        <span id='inames' class='value'>Francis Kwile</span>
-                    </div>
-                </span>
-            </div>
-            <div class='info_div' style='margin-top:15px; border:0px;'>
-                <span class='profile_pic_span'><img class='profile_pic' src='data/2.png'></span>
-                <span class='general_details'>
-                    <div class='row'>
-                        <label class='key'>Ref NO</label>
-                        <span id='inames' class='value'>8946/2019</span>
-                    </div>
-                    <div class='row'>
-                        <label class='key'>Crime</label>
-                        <span id='inames' class='value'>Vandalism</span>
-                    </div>
-                    <div class='row'>
-                        <label class='key'>Offender</label>
-                        <span id='inames' class='value'>Mabikke Hillary</span>
-                    </div>
-                </span>
-            </div>
-            <div class='info_div' style='margin-top:15px; border:0px;'>
-                <span class='profile_pic_span'><img class='profile_pic' src='data/3.png'></span>
-                <span class='general_details'>
-                    <div class='row'>
-                        <label class='key'>Ref NO</label>
-                        <span id='inames' class='value'>9625/2019</span>
-                    </div>
-                    <div class='row'>
-                        <label class='key'>Crime</label>
-                        <span id='inames' class='value'>Assault</span>
-                    </div>
-                    <div class='row'>
-                        <label class='key'>Offender</label>
-                        <span id='inames' class='value'>Male Moses</span>
-                    </div>
-                </span>
-            </div>
-            <div class='info_div' style='margin-top:15px; border:0px;'>
-                <span class='profile_pic_span'><img class='profile_pic' src='data/4.png'></span>
-                <span class='general_details'>
-                    <div class='row'>
-                        <label class='key'>Ref NO</label>
-                        <span id='inames' class='value'>03215/2019</span>
-                    </div>
-                    <div class='row'>
-                        <label class='key'>Crime</label>
-                        <span id='inames' class='value'>Missconduct</span>
-                    </div>
-                    <div class='row'>
-                        <label class='key'>Offender</label>
-                        <span id='inames' class='value'>Marvin Semuto</span>
-                    </div>
-                </span>
-            </div>
-            <div class='info_div' style='margin-top:15px; border:0px;'>
-                <span class='profile_pic_span'><img class='profile_pic' src='data/5.png'></span>
-                <span class='general_details'>
-                    <div class='row'>
-                        <label class='key'>Ref NO</label>
-                        <span id='inames' class='value'>93205/2019</span>
-                    </div>
-                    <div class='row'>
-                        <label class='key'>Crime</label>
-                        <span id='inames' class='value'>PDA</span>
-                    </div>
-                    <div class='row'>
-                        <label class='key'>Offender</label>
-                        <span id='inames' class='value'>Florence Kiiza</span>
-                    </div>
-                </span>
-            </div>
-
+            <div id='crimes_div'></div>
 
         </div>
 
         <div id='report_crime_div' style='display:none;'>
+            <span class="glyphicon glyphicon-chevron-left" style='margin:5px; font-size:1.2em;' onclick='logout()'></span><br>
             <label style='font-size:1.2em;margin:5px;'>Report Crime</label>
-    
-            <p>
-                <div style='margin-right:5px;'>
-                    <label class='key'>Date</label>
-                    <span class='value'><input type='date' class='form-control'></span>
-                </div>
-                <div style='margin-right:5px;'>
-                    <label class='key' style='margin-top:5px;'>Time</label>
-                    <span class='value' style='margin-top:5px;'><input type='time' class='form-control'></span>
-                </div>
-                <div style='margin-right:5px;'>
-                    <label class='key' style='margin-top:5px;'>Suspect</label>
-                    <span class='value' style='margin-top:5px;'><input type='text' placeholder="suspect's names" class='form-control'></span>
-                </div>
-                <div style='margin-right:5px;'>
-                    <label class='key' style='margin-top:5px;'>Location</label>
-                    <span class='value' style='margin-top:5px;'><input type='text' placeholder='crime location/scene' class='form-control'></span>
-                </div>
+            <form id='report-form' enctype="multipart/form-data">
+                <input name='reporter' id='rreporter' type='hidden' value=''>
+                
+                <p>
+                    <div style='margin-right:5px;'>
+                        <label class='key'>Date</label>
+                        <span class='value'><input id='rdate' name='date' type='date' class='form-control'></span>
+                    </div>
+                    <div style='margin-right:5px;'>
+                        <label class='key' style='margin-top:5px;'>Time</label>
+                        <span class='value' style='margin-top:5px;'><input name='time' type='time' class='form-control'></span>
+                    </div>
+                    <div style='margin-right:5px;'>
+                        <label class='key' style='margin-top:5px;'>Suspect</label>
+                        <span class='value' style='margin-top:5px;'><input name='suspect' type='text' placeholder="suspect's names" class='form-control'></span>
+                    </div>
 
-                <label style='margin:5px;margin-top:20px;'>Crime Description</label><br>
-                <textarea class='form-control' rows=6 placeholder='type here the crime details. you can be as explicit as possible'></textarea>
+                    <div style='margin-right:5px;'>
+                        <label class='key' style='margin-top:5px;'>Gender</label>
+                        <select name='sex' id='rsex' class='form-control value' style='margin-top:5px;'>
+                            <option value='Not Sure'>Not Sure</option>
+                            <option value='Male'>Male</option>
+                            <option value='Female'>Female</option>
+                        </select>
+                    </div>
 
-                <label style='margin:5px;margin-top:20px;'>Attachments</label><br>
-                <div id='rattachments_div' style='height:120px;border:1px solid #aaa;overflow:auto;'></div>
-                <input type='file' style='display:none;' id='new_attachment'>
-                <span id='plus' class='glyphicon glyphicon-plus' style='float:right;margin:5px;font-size:1.3em;'></span>
 
-            </p>
+                    <div style='margin-right:5px;'>
+                        <label class='key' style='margin-top:5px;'>Location</label>
+                        <span class='value' style='margin-top:5px;'><input id='rloc' name='loc' type='text' placeholder='crime location/scene' class='form-control'></span>
+                    </div>
+
+                    <label style='margin:5px;margin-top:20px;'>Crime Description</label><br>
+                    <textarea id='rdesc' name='desc' class='form-control' rows=6 placeholder='type here the crime details. you can be as explicit as possible'></textarea>
+
+                    <span id='plus' class='glyphicon glyphicon-plus' style='float:right;margin:5px;font-size:1.2em;margin-top:20px;'></span>
+                    <label style='margin:5px;margin-top:20px;'>Attachments</label><br>
+                    <div id='rattachments_div' style='height:120px;border:1px solid #aaa;overflow:auto;'></div>
+                    <input name='attachments' type='file' style='display:none;' id='new_attachment' accept="image/*" multiple>
+
+                </p>
+            </form>
 
             <div style='position:absolute; bottom:0px; margin:5px;width:96%;text-align:right;'>
                 <button class='btn btn-warning' style='margin-right:10px;' onclick='view_search()'>View Crimes</button>
-                <button class='btn btn-success'>Report</button>
+                <button class='btn btn-success' onclick='send_report()'>Report</button>
             </div>
 
         </div>

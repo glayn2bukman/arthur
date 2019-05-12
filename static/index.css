@@ -14,6 +14,19 @@ body{
     background-color:#2a9ee5/*#33ceff*/;
 }
 
+@media only screen and (orientation: landscape) {
+    #login_div{
+        position:absolute;
+        width:30%;left:35%;
+    }
+    
+    #full_report_div, #search_div, #report_crime_div{
+        position:absolute;
+        height:100%;
+        width:60%;left:20%;
+    }
+}
+
 #login_form{
     position:absolute;
     top:37%;
@@ -181,7 +194,10 @@ h3,h4{
 }
 
 .img-attachment{
+    /*float:left;*/
     width:100px;
     height:100px;
     margin:5px;
 }
+
+.clickable:hover,.profile_pic:hover,.general_details:hover,.glyphicon-chevron-left:hover,.glyphicon-plus:hover{cursor:pointer;}
