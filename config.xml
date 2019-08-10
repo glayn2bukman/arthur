@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 
-<widget id="org.jerm.arthur" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
-    <name>ICRS</name>
-    <description>Arthur Security System</description>
+<widget id="org.jerm.fei" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+    <name>FeiApp</name>
+    <description>A cool app</description>
 
     <author email="bukman@jermtechnology.com" href="http://www.jermtechnology.com">Jerm Technology</author>
     <content src="index.html" />
@@ -31,5 +31,6 @@
     <icon src="data/logo.png" gap:role="default" />
 
     <plugin name="cordova-plugin-whitelist" />
+
 </widget>
 
