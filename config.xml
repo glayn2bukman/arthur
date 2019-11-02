@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
 
-<widget id="org.jerm.arthur" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
-    <name>ICRS</name>
-    <description>Arthur Security System</description>
+<widget id="org.guy.lodocs" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+    <name>LoDocs</name>
+    <description>search for your lost items</description>
 
-    <author email="bukman@jermtechnology.com" href="http://www.jermtechnology.com">Jerm Technology</author>
+    <author email="huy@guy.com" href="http://www.lodocs.ml">Lo Docs</author>
     <content src="index.html" />
 
     <preference name="DisallowOverscroll" value="true" />

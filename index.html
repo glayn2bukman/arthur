@@ -1,274 +1,84 @@
-<!doctype html>
 <html>
-    <head>
+	<head>
         <meta charset="utf-8">        
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
 
-        <title>ICRS</title>
-    
-        <link rel="stylesheet" href="static/bootstrap-3.3.7/dist/css/bootstrap.min.css">
-        <link rel="stylesheet" href="static/index.css">
-        <link rel="stylesheet" href="static/loading.css">
+        <title>LoDocs</title>
 
-        <!-- jQuery library -->
-        <script src="static/jquery-3.3.1.min.js"></script>
+		<style>
+			body{
+				background-image: url("data/bg.jpg");
+				background-color: #cccccc;
+			}
 
-        <!-- Latest compiled JavaScript -->
-        <script src="static/bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>    
+			#loading{
+				color: #fff;
+				font-weight:bold;
 
-        <script src="static/CircleType.min.js"></script>
-        <script src="static/globals.js"></script>
-        <script src="static/index.js"></script>
+				position:absolute;
 
-        <!-- sweet alert -->
-        <script src="static/sweetalert/sweetalert.min.js"></script>
-        <link rel="stylesheet" href="static/sweetalert/sweetalert.css">
+				width: 96vw; left:2vw;
+				top:45vh;
 
-        <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
- 
-        <link id="theme" rel="stylesheet" href="">
-    </head>
+				z-index: 2;
 
-    <body oncontextmenu="return false;">     
-        <div id='login_div' style="display:none2">
-            <h1 id='title' style='font-size:1.5em;'>Interactive Crime Reporting System</h1>
-            <div id='login_form'>
-                <div class="input-group" style='margin-bottom:10px;'>
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                    <input id="uname" type="text" class="form-control li" name="uname" placeholder="Username">
-                </div>
-                <div class="input-group" style='margin-bottom:20px;'>
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                    <input id="pswd" type="password" class="form-control li" name="pswd" placeholder="Password">
-                </div>
-                <div>
-                    <button class='btn btn-info' style='width:40%;float:right;background:white;color:black;' onclick='login()'>Login</button>
-                </div>
-            </div>
-            <input id='ip' type='text' placeholder='10.42.0.1' 
-                style='position:fixed;bottom:5px;width:30%;left:35%;text-align:center;opacity:0.5;'>
-        </div>
+				text-align:center;
 
-        <div class="modal fade" id="admin_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-          <div class="modal-dialog" style="width:96%;" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel" style='font-size:1.5em;'>Edit Case</h4>
-              </div>
-              <div class="modal-body">
-                    <form id='admin-update' enctype="multipart/form-data">
-                        <input type='hidden' name='attachments_list' id='aattachments_list' value=''>
-                        <input type='hidden' name='dp_path' id='adp_path' value=''>
-                        <input type='hidden' name='progress' id='aprogress' value=''>
-                        
-                        <div class='row' style='max-width:70%;'>
-                            <label class='key'>Reported By</label>
-                            <input id='aareporter' name='reporter' type='hidden' value='17/U/7730/PE'>
-                            <span id='areporter' class='form-control value'>17/U/7730/PE</span>
-                        </div>
+				font-size:2em;
+			}
 
-                        <div id='general_info' style='border:0px;'>
-                            <input name='_dp_path' type='hidden' value='dp.png'>
-                            <input name='dp' type='file' style='display:none;' id='adp' accept="image/*">
-                            <span id='aprofile_pic_span'><img id='aprofile_pic' style='width:100px;' src=''></span>
-                        </div>
+			#iframe{
+				position:absolute;
+				width: 100vw; left: 0vw;
+				height: 100vh; top: 0vh;
+				display: block;
+				overflow:auto;
+			}
+			
+		</style>
 
-                        <div class='row' style='max-width:70%;'>
-                            <label class='key'>Suspect's Names</label>
-                            <input name='suspect' id='anames' type='text' class='form-control value' placeholder='John Doe'>
-                        </div>
-                        <div class='row' style='max-width:70%;'>
-                            <label class='key'>Age</label>
-                            <input name='age' id='aage' type='number' class='form-control value' placeholder='age'>
-                        </div>
-                        <div class='row' style='max-width:70%;'>
-                            <label class='key'>Gender</label>
-                            <select name='sex' id='asex' class='form-control value'>
-                                <option value='Not Sure'>Not Sure</option>
-                                <option value='Male'>Male</option>
-                                <option value='Female'>Female</option>
-                            </select>
-                        </div>
+	</head>
 
-                        <div class='row' style='max-width:70%;'>
-                            <label class='key'>Crime</label>
-                            <select name='crime' id='acrime' class='form-control value'>
-                                <option value='Unspecified'>Unspecified</option>
-                                <option value='Theft'>Theft</option>
-                                <option value='Assault'>Assault</option>
-                                <option value='Unlawful Rioting'>Unlawful Rioting</option>
-                            </select>
-                        </div>
-                        <div class='row' style='max-width:70%;'>
-                            <label class='key'>Location</label>
-                            <input name='loc' id='aloc' type='text' class='form-control value' placeholder='eg Main Hall, East'>
-                        </div>
-                        <div class='row' style='max-width:70%;'>
-                            <label class='key'>Ref NO</label>
-                            <!-- cant edit this -->
-                            <input id='aarefNO'name='refNO' type='hidden' value='0865/2019'>
-                            <span id='arefNO' class='form-control value'>0865/2019</span>
-                        </div>
-                        <div class='row' style='max-width:70%;'>
-                            <label class='key'>Date</label>
-                            <input id='aadate'name='date' type='hidden' value='02/03/2019'>
-                            <span id='adate' class='form-control value'>02/03/2019</span>
-                        </div>
-                        
-                        <p style='margin:5px;float:left;width:100%;'>
-                            <label style='font-size:1.2em;'>Description</label><br>
-                            <textarea name='desc' id='adesc' rows=6 class='form-control'></textarea>
-                        </p>
+	<body>
+		<span id="loading">Loading
+			<span id="_loading1" style="position:absolute;right:5px;"></span>
+			<span id="_loading2" style="position:absolute;left:5px;"></span>
+		</span>
 
-                        <p style='margin:5px;float:left;width:100%; overflow:auto;'>
-                            <span class="glyphicon glyphicon-plus" 
-                                style='float:right;margin:5px; font-size:1.2em;color:green;'
-                                onclick='new_progress()'></span>
-                            <label style='font-size:1.2em;'>Progress</label>
-                            <ol id='aprogress_ul' style='border-bottom:1px solid #bbb; float:left;width:100%;' reversed></ol>
-                        </p>
-                        
-                        <p style="margin:5px;float:left;width:100%;">
-                            <input name='attachments' type='file' style='display:none;' id='anew_attachment' accept="image/*" multiple>
-                            <span id='aplus' class="glyphicon glyphicon-plus" style='float:right;margin:5px; font-size:1.2em;color:green;'></span>
-                            <label style='font-size:1.2em;'>Attachments</label><br>
-                            <div id='aattachments_div' style='float:left;width:100%;overflow:auto;background:#bbb;'>
-                            </div>
-                        </p>
+		<iframe id="iframe">
+		</iframe>
+	</body>
 
-                        <div class='row' style='float:left;width:100%;margin-top:30px;text-align:right;'>
-                            <button type="button" class="btn btn-danger" data-dismiss="modal" >Back</button>
-                            <button type="button" class="btn btn-success" onclick='update()'>Update Case</button>
-                        </div>
-                    </form>
-              <div class="modal-footer" style='border:0px;'></div>
-            </div>
-          </div>
-        </div></div>
+	<script>
+		var lINT = null;
 
+		function loaded(){
+			clearInterval(lINT);
+		}
+		
+		window.onload = function(){
+			let el1 = document.getElementById("_loading1");
+			let el2 = document.getElementById("_loading2");
+			let i = 0;
 
-        <div id='full_report_div' style='display:none;'>
-            <span class="glyphicon glyphicon-chevron-left" style='margin:5px; font-size:1.2em;' onclick='exit_full_report()'></span>
-            <div id='general_info'>
-                <span id='profile_pic_span'><img id='profile_pic' src=''></span>
-                <span id='general_details'>
-                    <div class='row'>
-                        <label class='key'>Name</label>
-                        <span id='inames' class='value'></span>
-                    </div>
-                    <div class='row'>
-                        <label class='key'>Age</label>
-                        <span id='iage' class='value'></span>
-                    </div>
-                    <div class='row'>
-                        <label class='key'>Sex</label>
-                        <span id='isex' class='value'></span>
-                    </div>
-                </span>
-            </div>
-            <div style='min-height:25px;'>
-                <label class='key2'>Crime</label>
-                <span class='value2' id='icrime'></span>
-            </div>
-            <div style='min-height:25px;'>
-                <label class='key2'>Location</label>
-                <span id='iloc' class='value2'></span>
-            </div>
-            <div style='min-height:25px;'>
-                <label class='key2'>Ref NO</label>
-                <span class='value2' id='irefNO'></span>
-            </div>
-            <div style='min-height:25px; border-bottom:1px solid #bbb;'>
-                <label class='key2'>Date</label>
-                <span id='idate' class='value2'></span>
-            </div>
-            
-            <p style='margin:5px; border-bottom:1px solid #bbb;'>
-                <label style='font-size:1.2em;'></label><br>
-                <div id='idesc' style='margin:5px;'></div>
-            </p>
+			lINT = setInterval(function(){
+				i++;
+				if(i>10) i = 0;
 
-            <p style='margin:5px;'>
-                <label style='font-size:1.2em;'>Progress</label><br>
-                <ol id='iprogress' style='border-bottom:1px solid #bbb;' reversed></ol>
-            </p>
-            
-            <p style="margin:5px;">
-                <label style='font-size:1.2em;'>Attachments</label><br>
-                <div id='iattachments' style='float:left;width:100%;overflow:auto;'></div>
-            </p>
-            
-        </div>
+				el1.innerHTML = ""; //"Loading";
+				el2.innerHTML = ""; //"Loading";
+				for(let j=0; j<i; ++j){el1.innerHTML += '.'; el2.innerHTML += '.';}
+				
+			},200);
 
-        <div id='search_div' style='display:none;'>
-            <span class="glyphicon glyphicon-chevron-left" style='margin:5px; font-size:1.2em;' onclick='exit_search()'></span>
-            <div style='height:30px;'>
-                <label style='margin:5px;'>Search Crimes</label>
-                <div class="input-group" style='margin:5px;'>
-                    <input id="search" type="text" class="form-control" placeholder="reference number">
-                    <span class="input-group-addon" onclick='filter()'><i class="glyphicon glyphicon-search"></i></span>
-                </div>
-            </div>
-            
-            <div id='crimes_div'></div>
+			document.getElementById("iframe").onload = function(){
+				loaded();
+				document.getElementById("loading").style.display = 'none';
+				document.getElementById("iframe").display = 'block';
+			}
+			document.getElementById("iframe").src = "http://www.lodocs.ml";
+		}
 
-        </div>
-
-        <div id='report_crime_div' style='display:none;'>
-            <span class="glyphicon glyphicon-chevron-left" style='margin:5px; font-size:1.2em;' onclick='logout()'></span><br>
-            <label style='font-size:1.2em;margin:5px;'>Report Crime</label>
-            <form id='report-form' enctype="multipart/form-data">
-                <input name='reporter' id='rreporter' type='hidden' value=''>
-                
-                <p>
-                    <div style='margin-right:5px;'>
-                        <label class='key'>Date</label>
-                        <span class='value'><input id='rdate' name='date' type='date' class='form-control'></span>
-                    </div>
-                    <div style='margin-right:5px;'>
-                        <label class='key' style='margin-top:5px;'>Time</label>
-                        <span class='value' style='margin-top:5px;'><input name='time' type='time' class='form-control'></span>
-                    </div>
-                    <div style='margin-right:5px;'>
-                        <label class='key' style='margin-top:5px;'>Suspect</label>
-                        <span class='value' style='margin-top:5px;'><input name='suspect' type='text' placeholder="suspect's names" class='form-control'></span>
-                    </div>
-
-                    <div style='margin-right:5px;'>
-                        <label class='key' style='margin-top:5px;'>Gender</label>
-                        <select name='sex' id='rsex' class='form-control value' style='margin-top:5px;'>
-                            <option value='Not Sure'>Not Sure</option>
-                            <option value='Male'>Male</option>
-                            <option value='Female'>Female</option>
-                        </select>
-                    </div>
-
-
-                    <div style='margin-right:5px;'>
-                        <label class='key' style='margin-top:5px;'>Location</label>
-                        <span class='value' style='margin-top:5px;'><input id='rloc' name='loc' type='text' placeholder='crime location/scene' class='form-control'></span>
-                    </div>
-
-                    <label style='margin:5px;margin-top:20px;'>Crime Description</label><br>
-                    <textarea id='rdesc' name='desc' class='form-control' rows=6 placeholder='type here the crime details. you can be as explicit as possible'></textarea>
-
-                    <span id='plus' class='glyphicon glyphicon-plus' style='float:right;margin:5px;font-size:1.2em;margin-top:20px;'></span>
-                    <label style='margin:5px;margin-top:20px;'>Attachments</label><br>
-                    <div id='rattachments_div' style='height:120px;border:1px solid #aaa;overflow:auto;'></div>
-                    <input name='attachments' type='file' style='display:none;' id='new_attachment' accept="image/*" multiple>
-
-                </p>
-            </form>
-
-            <div style='position:absolute; bottom:0px; margin:5px;width:96%;text-align:right;'>
-                <button class='btn btn-warning' style='margin-right:10px;' onclick='view_search()'>View Crimes</button>
-                <button class='btn btn-success' onclick='send_report()'>Report</button>
-            </div>
-
-        </div>
-
-        <div id='loading' class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-    </body>
+	</script>
 
 </html>
